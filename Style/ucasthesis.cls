@@ -149,6 +149,7 @@
 \renewcommand{\@title}{\UCAS@value@titlemark}
 \renewcommand{\author}[1]{\def\UCAS@value@author{#1}}
 \newcommand{\advisor}[1]{\def\UCAS@value@advisor{#1}}
+\newcommand{\advisorinstitute}[1]{\def\UCAS@value@advisorinstitute{#1}}
 \newcommand{\advisorsec}[1]{\def\UCAS@value@advisorsec{#1}}
 \newcommand{\degree}[1]{\def\UCAS@value@degree{#1}}
 \newcommand{\degreetype}[1]{\def\UCAS@value@degreetype{#1}}
@@ -190,7 +191,7 @@
         \begin{tabular}{lc}
             \UCAS@label@author & \ulenhance[1.2pt]{\ulextend{\UCAS@value@author}}\\
             \UCAS@label@advisor & \ulenhance[1.2pt]{\ulextend{\UCAS@value@advisor}}\\
-            & \ulenhance[1.2pt]{\ulextend{\UCAS@value@advisorsec}}\\
+            & \ulenhance[1.2pt]{\ulextend{\UCAS@value@advisorinstitute}}\\
             \UCAS@label@degree & \ulenhance[1.2pt]{\ulextend{\UCAS@value@degreetype\UCAS@value@degree}}\\
             \UCAS@label@major & \ulenhance[1.2pt]{\ulextend{\UCAS@value@major}}\\
             \UCAS@label@institute & \ulenhance[1.2pt]{\ulextend{\UCAS@value@institute}}\\
