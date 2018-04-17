@@ -9,8 +9,7 @@
 \title{基于PGAS模型和数据流模型的并行优化的研究及应用}% \title[short title for headers]{Long title of thesis}
 \author{刘涛}% name of author
 \advisor{尤海航~研究员}% supervisor
-%\advisor{}% co-supervisor
-\advisorinstitute{中国科学院计算技术研究所}
+\advisorsec{中国科学院计算技术研究所}
 \degree{硕士}% degree
 \degreetype{工学}% degree type
 \major{计算机系统结构}% major
@@ -22,7 +21,8 @@
 \englishtitle{Study and Applications of Parallel Optimization Based on\\ PGAS Model and Data Flow Model}
 \englishauthor{Liu Tao}
 \englishadvisor{Supervisor: Professor You Haihang}
-\englishdegree{Master of Science in Engineering}% degree type <Doctor|Master> of <Philosophy|Natural Science|Engineering>
+\englishdegree{Master}% degree type <Doctor|Master> of <Philosophy|Natural Science|Engineering>
+\englishdegreetype{Science~in~Engineering}% 学位类别：Philosophy, Natural Science, Engineering, Economics, Agriculture 等
 \englishthesistype{thesis}% thesis type <thesis|dissertation>
 \englishmajor{Computer Architecture}% major
 \englishinstitute{Institute of Computing Technology, Chinese Academy of Sciences}
@@ -46,7 +46,7 @@
 
 随着多核处理器和分布式集群的流行，并行编程在高性能计算领域和互联网软件开发中的作用越来越大。但是到目前为止，并行编程的开发环境还较为落后，传统的并行编程技术以及科学计算库难以充分利用如今计算机体系架构下的多核机和分布式集群的性能，造成计算资源的浪费，难以达到优秀的性能提升效果。
 
-MPI作为分布式内存下并行编程的标准已经有二十多年的历史，它有很多明显的缺点：需要通过显示的消息传递实现控制流的并行执行，使用难度较高，而且不能充分利用单机中的多核，往往需要结合多线程编程技术如pthread和OpenMP等，这样的话又要考虑共享内存环境下线程安全等问题。使用MPI+OpenMP在多核节点构成的分布式集群进行并行编程，不仅编程复杂，而且调试困难，将给开发人员带来极大的挑战。如何代替开发人员在多核和分布式环境下进行并行优化，提高计算资源的利用率和程序的性能，是亟待解决的问题。
+MPI作为分布式内存下并行编程的标准已经有二十多年的历史，它有很多明显的缺点：需要通过显示的消息传递实现控制流的并行执行，使用难度较高，而且不能充分利用单机中的多核，往往需要结合多线程编程技术如pthread和OpenMP等，这样的话又要考虑共享内存环境下线程安全等问题。使用MPI和OpenMP在多核节点构成的分布式集群进行并行编程，不仅编程复杂，而且调试困难，将给开发人员带来极大的挑战。如何代替开发人员在多核和分布式环境下进行并行优化，提高计算资源的利用率和程序的性能，是亟待解决的问题。
 
 从并行计算模型上来看，BSP计算模型简化了并行算法的设计和分析，但是牺牲了运行时间，因为整体同步会导致同一超步内的所有控制流必须等待最慢的执行单元结束后才能继续推进。当分布式节点或节点不同核心的计算时间差异较大时，会造成更多的运行时间的浪费。相比之下，数据流模型则克服了这个缺点。数据流模型是一种天然的并行模型，不需要集中控制，对于任何一个任务，只要它的输入就绪，当运行时有可用资源就可以开始运行，这样就大大提高了计算资源的利用效率，可以实现超大规模的并行。
 
@@ -63,7 +63,7 @@ MPI作为分布式内存下并行编程的标准已经有二十多年的历史�
 
 With the popularity of multi-core processors and distributed clusters, parallel programming is playing an increasingly important role in the field of high-performance computing and software development. But so far, parallel programming development environment is still lagging behind. The traditional parallel programming technology and scientific computing libraries aren't able to make full use of the performance of multi-core machines and distributed clusters in today's computer architecture, resulting in a waste of computing resources and making it difficult to achieve satisfied performance improvement.
 
-MPI has been the standard for parallel programming in distributed memory for more than twenty years. It has many obvious disadvantages: it needs to implement parallel execution of control flow through message passing; it's difficult to use; and it cannot fully utilize all cores in a single machine, often need to combine multi-thread programming techniques such as pthreads and OpenMP, which means developers must consider issues such as thread safety in the context of shared memory... Using MPI+OpenMP to perform parallel programming on distributed clusters composed of multi-core nodes, not only increases programming complexity, but also makes debugging more difficult, which will bring great challenges to developers. How to take place of developers to perform parallel optimization in the multi-core and distributed environment and improve the utilization of computing resources and program performance is eager to be solved.
+MPI has been the standard for parallel programming in distributed memory for more than twenty years. It has many obvious disadvantages: it needs to implement parallel execution of control flow through message passing; it's difficult to use; and it cannot fully utilize all cores in a single machine, often need to combine multi-thread programming techniques such as pthreads and OpenMP, which means developers must consider issues such as thread safety in the context of shared memory... Using MPI and OpenMP to perform parallel programming on distributed clusters composed of multi-core nodes, not only increases programming complexity, but also makes debugging more difficult, which will bring great challenges to developers. How to take place of developers to perform parallel optimization in the multi-core and distributed environment and improve the utilization of computing resources and program performance is eager to be solved.
 
 In terms of the parallel computing model, the BSP calculation model simplifies the design and analysis of parallel algorithms, but at the expense of running time, because the overall synchronization will cause all control flows in the same super-step to wait for the slowest execution unit to terminate before proceeding. When the computing time of the distributed nodes or different cores in a node varies greatly, more running time will be wasted. In contrast, the data flow model overcomes this shortcoming. The data flow model is a natural parallel model and does not require centralized control. For any task, as long as its input is ready and there are available resources, it can start running, which greatly improves the efficiency of the use of computing resources.
 

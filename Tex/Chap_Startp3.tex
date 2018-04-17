@@ -187,28 +187,18 @@ class CScheduler {
 
 \section{star\_tp的正确性测试}
 
-对star\_tp进行正确性测试的主要目的就是验证star\_tp中的任务调度机制是否运行正确，即任务执行的顺序是否符合运行时DAG的状态。下面以图3.5所示的测试用例为例进行正确性测试。在图3.5中，每个节点代表一个任务，一共有16个任务，节点上的数字代表task id；箭头表示相连的两个任务之间存在依赖关系；每个任务的内容是休眠1秒，然后打印task id。
-
-如何来判断程序的运行结果是否正确呢？以图3.5为例，像task 0，task 2，task 6这样的任务，他们的输入依赖为空，在程序运行时只要有空闲的worker就可以立即并行执行；但是像task 3 这样的任务，它的输入依赖是task 1和task 2，只有当task 1和task 2完成后task 3才可以开始执行。所以只要不违背上述的任务执行顺序，就说明star\_tp任务调度算法是正确的。
+对star\_tp进行正确性测试的主要目的就是验证star\_tp中的任务调度机制是否运行正确，即任务执行的顺序是否符合运行时DAG的状态。
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.60\textwidth]{3_star_tp_example_topo}
+    \includegraphics[width=0.40\textwidth]{3_star_tp_example_topo}
     \bicaption{star\_tp测试用例任务拓扑。}{ Task topology of star\_tp test case.}
     \label{fig:3_star_tp_example_topo}
 \end{figure}
 
-图3.5的测试用例任务拓扑图对应的测试代码如图3.6所示，这是使用star\_tp进行并行优化的典型代码结构。下面逐行解释图3.6中的测试代码：
+下面以图3.5所示的测试用例为例进行正确性测试。在图3.5中，每个节点代表一个任务，一共有16个任务，节点上的数字代表task id；箭头表示相连的两个任务之间存在依赖关系；每个任务的内容是休眠1秒，然后打印task id。
 
-\begin{itemize}
-	\item \textbf{第1-4行}：待执行函数的定义。
-	\item \textbf{第6行}：构造线程池，指定线程池容量为6，将创建6个worker线程。
-	\item \textbf{第7行}：获取调度器单例对象。
-	\item \textbf{第8-10行}：定义所有任务。
-	\item \textbf{第11-23行}：指定任务之间的依赖关系。
-	\item \textbf{第24行}：调度器插入任务。
-	\item \textbf{第25行}：调度器绑定线程池，开始进行任务调度，直到所有任务完成。
-\end{itemize}
+如何来判断程序的运行结果是否正确呢？以图3.5为例，像task 0，task 2，task 6这样的任务，他们的输入依赖为空，在程序运行时只要有空闲的worker就可以立即并行执行；但是像task 3 这样的任务，它的输入依赖是task 1和task 2，只有当task 1和task 2完成后task 3才可以开始执行。所以只要不违背上述的任务执行顺序，就说明star\_tp任务调度算法是正确的。
 
 \begin{figure}[!htbp]
     \centering
@@ -246,13 +236,25 @@ int main() {
     \label{fig:3_star_tp_example_code}
 \end{figure}
 
+图3.5的测试用例任务拓扑图对应的测试代码如图3.6所示，这是使用star\_tp进行并行优化的典型代码结构。下面逐行解释图3.6中的测试代码：
+
+\begin{itemize}
+	\item \textbf{第1-4行}：待执行函数的定义。
+	\item \textbf{第6行}：构造线程池，指定线程池容量为6，将创建6个worker线程。
+	\item \textbf{第7行}：获取调度器单例对象。
+	\item \textbf{第8-10行}：定义所有任务。
+	\item \textbf{第11-23行}：指定任务之间的依赖关系。
+	\item \textbf{第24行}：调度器插入任务。
+	\item \textbf{第25行}：调度器绑定线程池，开始进行任务调度，直到所有任务完成。
+\end{itemize}
+
 测试程序运行在有64个核的服务器上，由于线程池容量指定为6，所以不会出现线程资源抢占的情况。
 
 运行结果如图3.7所示。在开始和退出阶段稍有停顿，这是因为star\_tp运行时环境的初始化和退出阶段涉及许多资源的申请和释放。
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.60\textwidth]{3_star_tp_example_result}
+    \includegraphics[width=0.40\textwidth]{3_star_tp_example_result}
     \bicaption{star\_tp测试用例运行结果。}{ Result of star\_tp test case.}
     \label{fig:3_star_tp_example_result}
 \end{figure}
