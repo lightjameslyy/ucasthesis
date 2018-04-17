@@ -1,57 +1,75 @@
 %---------------------------------------------------------------------------%
-%->> 封面信息及生成
+%->> Titlepage information
 %---------------------------------------------------------------------------%
 %-
-%-> 中文封面信息
+%-> Chinese titlepage
 %-
-\confidential{}% 密级：只有涉密论文才填写
-\schoollogo{scale=0.095}{ucas_logo}% 校徽
-\title{中国科学院大学学位论文\LaTeX{}模板 {$~^{\pi}\pi^{\pi}$}}% 论文中文题目
-\author{莫晃锐}% 论文作者
-\advisor{刘青泉~研究员~中国科学院力学研究所}% 指导教师：姓名 专业技术职务 工作单位
-\advisorsec{}% 指导老师附加信息 或 第二指导老师信息
-\degree{硕士}% 学位：学士、硕士、博士
-\degreetype{理学}% 学位类别：理学、工学、工程、医学等
-\major{流体力学}% 二级学科专业名称
-\institute{中国科学院力学研究所}% 院系名称
-\chinesedate{2014~年~6~月}% 毕业日期：夏季为6月、冬季为12月
+\confidential{}% confidential level
+\schoollogo{scale=0.095}{ucas_logo}% university logo
+\title{基于PGAS模型和数据流模型的并行优化的研究及应用}% \title[short title for headers]{Long title of thesis}
+\author{刘涛}% name of author
+\advisor{尤海航~研究员}% supervisor
+\advisorsec{中国科学院计算技术研究所}
+\degree{硕士}% degree
+\degreetype{工学}% degree type
+\major{计算机系统结构}% major
+\institute{中国科学院计算技术研究所}% institute of author
+\chinesedate{2018~年~6~月}% customized date, 6 for summer and 12 for winter graduation
 %-
-%-> 英文封面信息
+%-> English titlepage
 %-
-\englishtitle{\LaTeX{} Thesis Template\\ of \\ The University of Chinese Academy of Sciences {$~^{\pi}\pi^{\pi}$}}% 论文英文题目
-\englishauthor{Mo Huangrui}% 论文作者
-\englishadvisor{Supervisor: Professor Liu Qingquan}% 指导教师
-\englishdegree{Master}% 学位：Bachelor, Master, Doctor。封面格式将根据英文学位名称自动切换，请确保拼写准确无误
-\englishdegreetype{Natural Science}% 学位类别：Philosophy, Natural Science, Engineering, Economics, Agriculture 等
-\englishthesistype{thesis}% 论文类型： thesis, dissertation
-\englishmajor{Fluid Mechanics}% 二级学科专业名称
-\englishinstitute{Institute of Mechanics, Chinese Academy of Sciences}% 院系名称
-\englishdate{June, 2014}% 毕业日期：夏季为June、冬季为December
+\englishtitle{Study and Applications of Parallel Optimization Based on\\ PGAS Model and Data Flow Model}
+\englishauthor{Liu Tao}
+\englishadvisor{Supervisor: Professor You Haihang}
+\englishdegree{Master}% degree type <Doctor|Master> of <Philosophy|Natural Science|Engineering>
+\englishdegreetype{Science~in~Engineering}% 学位类别：Philosophy, Natural Science, Engineering, Economics, Agriculture 等
+\englishthesistype{thesis}% thesis type <thesis|dissertation>
+\englishmajor{Computer Architecture}% major
+\englishinstitute{Institute of Computing Technology, Chinese Academy of Sciences}
+\englishdate{June, 2018}% customized date
 %-
-%-> 生成封面
+%-> Create titlepages
 %-
-\maketitle% 生成中文封面
-\makeenglishtitle% 生成英文封面
+\maketitle
+\makeenglishtitle
 %-
-%-> 作者声明
+%-> Author's declaration
 %-
-\makedeclaration% 生成声明页
+\makedeclaration
 %-
-%-> 中文摘要
+%-> Chinese abstract
 %-
-\chapter*{摘\quad 要}\chaptermark{摘\quad 要}% 摘要标题
-\setcounter{page}{1}% 开始页码
-\pagenumbering{Roman}% 页码符号
+\chapter*{摘\quad 要}
+\chaptermark{摘\quad 要}
+\setcounter{page}{1}% set page number
+\pagenumbering{Roman}% set large roman
 
-本文是中国科学院大学学位论文模板ucasthesis的使用说明文档。主要内容为介绍\LaTeX{}文档类ucasthesis的用法，以及如何使用\LaTeX{}快速高效地撰写学位论文。
+随着多核处理器和分布式集群的流行，并行编程在高性能计算领域和互联网软件开发中的作用越来越大。但是到目前为止，并行编程的开发环境还较为落后，传统的并行编程技术以及科学计算库难以充分利用如今计算机体系架构下的多核机和分布式集群的性能，造成计算资源的浪费，难以达到优秀的性能提升效果。
 
-\keywords{中国科学院大学，学位论文，\LaTeX{}模板}% 中文关键词
+MPI作为分布式内存下并行编程的标准已经有二十多年的历史，它有很多明显的缺点：需要通过显示的消息传递实现控制流的并行执行，使用难度较高，而且不能充分利用单机中的多核，往往需要结合多线程编程技术如pthread和OpenMP等，这样的话又要考虑共享内存环境下线程安全等问题。使用MPI和OpenMP在多核节点构成的分布式集群进行并行编程，不仅编程复杂，而且调试困难，将给开发人员带来极大的挑战。如何代替开发人员在多核和分布式环境下进行并行优化，提高计算资源的利用率和程序的性能，是亟待解决的问题。
+
+从并行计算模型上来看，BSP计算模型简化了并行算法的设计和分析，但是牺牲了运行时间，因为整体同步会导致同一超步内的所有控制流必须等待最慢的执行单元结束后才能继续推进。当分布式节点或节点不同核心的计算时间差异较大时，会造成更多的运行时间的浪费。相比之下，数据流模型则克服了这个缺点。数据流模型是一种天然的并行模型，不需要集中控制，对于任何一个任务，只要它的输入就绪，当运行时有可用资源就可以开始运行，这样就大大提高了计算资源的利用效率，可以实现超大规模的并行。
+
+从并行编程模型上来看，OpenMP是当今科学计算领域最重要的共享内并行编程模型，共享内存具有统一的地址空间，可以直接访问数据，易于编程，但是要考虑线程安全等问题；MPI是当今面向分布式内存计算的最重要的并行编程模型，分布式内存的地址空间是分散的，数据的共享要用过消息传递来实现，编程比较复杂，但是可以获得更好的可扩展性。而分区全局地址空间（PGAS，Partitioned Global Address Space）编程模型则结合了共享内存和分布式内存的优点，同时具备了共享内存编程模型的高效率、易编程性和分布式内存编程模型的可扩展性。
+
+本文分析了目前并行编程技术的发展和面临的挑战，从并行计算模型和并行编程模型两个方面找到了构建更加高效、易用的并行优化工具的方向：采用数据流计算模型解决传统BSP模型全局同步造成的计算资源浪费的问题，采用PGAS并行编程模型来结合共享内存并行编程模型的易编程性和分布式内存并行编程模型的可扩展性。之后按照这个思路分别实现了共享内存下基于线程池和数据流计算模型的并行优化工具star\_tp和分布式内存下基于PGAS和数据流计算模型的star-d，并对它们进行了性能测试。
+
+\keywords{PGAS，数据流，并行优化，任务调度}
 %-
-%-> 英文摘要
+%-> English abstract
 %-
-\chapter*{Abstract}\chaptermark{Abstract}% 摘要标题
+\chapter*{Abstract}
+\chaptermark{Abstract}
 
-This paper is a help documentation for the \LaTeX{} class ucasthesis, which is  a thesis template for the University of Chinese Academy of Sciences. The main content is about how to use the ucasthesis, as well as how to write thesis efficiently by using \LaTeX{}.
+With the popularity of multi-core processors and distributed clusters, parallel programming is playing an increasingly important role in the field of high-performance computing and software development. But so far, parallel programming development environment is still lagging behind. The traditional parallel programming technology and scientific computing libraries aren't able to make full use of the performance of multi-core machines and distributed clusters in today's computer architecture, resulting in a waste of computing resources and making it difficult to achieve satisfied performance improvement.
 
-\englishkeywords{University of Chinese Academy of Sciences (UCAS), Thesis, \LaTeX{} Template}% 英文关键词
+MPI has been the standard for parallel programming in distributed memory for more than twenty years. It has many obvious disadvantages: it needs to implement parallel execution of control flow through message passing; it's difficult to use; and it cannot fully utilize all cores in a single machine, often need to combine multi-thread programming techniques such as pthreads and OpenMP, which means developers must consider issues such as thread safety in the context of shared memory... Using MPI and OpenMP to perform parallel programming on distributed clusters composed of multi-core nodes, not only increases programming complexity, but also makes debugging more difficult, which will bring great challenges to developers. How to take place of developers to perform parallel optimization in the multi-core and distributed environment and improve the utilization of computing resources and program performance is eager to be solved.
+
+In terms of the parallel computing model, the BSP calculation model simplifies the design and analysis of parallel algorithms, but at the expense of running time, because the overall synchronization will cause all control flows in the same super-step to wait for the slowest execution unit to terminate before proceeding. When the computing time of the distributed nodes or different cores in a node varies greatly, more running time will be wasted. In contrast, the data flow model overcomes this shortcoming. The data flow model is a natural parallel model and does not require centralized control. For any task, as long as its input is ready and there are available resources, it can start running, which greatly improves the efficiency of the use of computing resources.
+
+From the perspective of parallel programming model, OpenMP is the most important shared-memory parallel programming model in the field of scientific computing. Shared memory has a unified address space. It can directly accesses data and is easy to program in, but it needs to consider issues such as thread safety. MPI is the most important parallel programming model for distributed memory computing. The address space of distributed memory is decentralized, and data sharing is implemented using message passing. Programming on distributed memory is more complicated, but can achieve better scalability. The partitioned global address space (PGAS) programming model combines the advantages of shared memory and distributed memory: high efficiency, ease of programming of shared memory programming model and scalibility of distributed memory programming model.
+
+This paper analyzed the development of parallel programming technology and the challenges it faces. Considering the parallel computing model and the parallel programming model, we proposed the overall solution of building a more efficient and easy-to-use parallel optimization tool: using data flow computing model to solve the traditional BSP model. The PGAS parallel programming model is used to combine the ease of programming of the shared memory parallel programming model and the scalability of the distributed memory parallel programming model. Afterwards, according to this idea, parallel optimization tool star\_tp based on thread pool and data flow calculation model in shared memory and star-d based on PGAS and data flow calculation model in distributed memory were implemented respectively, and they were tested in terms of performance.
+
+\englishkeywords{PGAS, Data Flow, Parallel Optimization, Task Scheduling}
 %---------------------------------------------------------------------------%

@@ -224,8 +224,11 @@
         \setCJKsansfont[AutoFakeBold]{SimHei}%
         \setCJKmonofont{FangSong}%
     \else\ifartx@mac%
-        \setCJKmainfont[ItalicFont=Kaiti SC,BoldItalicFont=Kaiti SC Bold]{Songti SC Light}%
-        \setCJKsansfont{Heiti SC}%
+        %\setCJKmainfont[ItalicFont=Kaiti SC,BoldItalicFont=Kaiti SC Bold]{Songti SC Light}%
+        %\setCJKsansfont{Heiti SC}%
+        %\setCJKmonofont{STFangsong}%
+        \setCJKmainfont[ItalicFont=STKaiti,BoldItalicFont=STKaiti]{STSong}%
+        \setCJKsansfont{STHeiti}%
         \setCJKmonofont{STFangsong}%
     \else\ifartx@adobe%
         \setCJKmainfont[AutoFakeBold,ItalicFont=AdobeKaitiStd-Regular]{AdobeSongStd-Light}%
@@ -352,6 +355,7 @@
 %-
 %-> Complex tables
 %-
+\RequirePackage{diagbox}% generate slash table header
 \ifartx@table%
     \RequirePackage{ctable}% imports the array, tabularx and booktabs packages
 \fi
