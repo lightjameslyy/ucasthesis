@@ -72,7 +72,7 @@ DASH是一个支持PGAS编程模型的C++模板库，而且按照STL的设计方
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.40\textwidth]{4_star-d-runtime}
+    \includegraphics[width=0.80\textwidth]{4_star-d-runtime}
     \bicaption{star-d的运行时架构。}{Runtime architecture of star-d.}
     \label{fig:4_star-d-runtime}
 \end{figure}
@@ -96,7 +96,7 @@ star-d中的任务调度同样是master/slave架构：scheduler负责任务的�
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.40\textwidth]{4_star-d_task_stat}
+    \includegraphics[width=0.50\textwidth]{4_star-d_task_stat}
     \bicaption{star-d中任务状态转换图。}{State transition diagram of tasks in star-d.}
     \label{fig:4_star-d_task_stat}
 \end{figure}
@@ -116,7 +116,7 @@ star-d中的任务状态包括：
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.40\textwidth]{4_star-d_worker_stat}
+    \includegraphics[width=0.50\textwidth]{4_star-d_worker_stat}
     \bicaption{star-d中worker状态转换图。}{State transition diagram of workers in star-d.}
     \label{fig:4_star-d_worker_stat}
 \end{figure}
@@ -176,6 +176,20 @@ STask的主要API解释：
 
 \subsection{STopology类}
 
+STopology类的定义如图4.7所示，它负责管理所有任务，初始化和更新任务之间的依赖关系等工作。STopology并不为用户提供接口，抽象出topology是为了方便设计scheduler的逻辑。
+
+STopology主要API解释：
+
+\begin{itemize}
+	\item 构造函数：传入task列表。
+	\item addEdge()：添加任务依赖。
+	\item size()：获取任务个数。
+	\item getTask()：获取task id对应的任务。
+	\item finishAddEdges()：完成依赖关系的指定。
+	\item updateTaskDependencies()：更新任务依赖。
+	\item getNextReadyTaskId()：获取就绪任务。
+\end{itemize}
+
 \begin{figure}[!htbp]
     \centering
 \begin{lstlisting}[language=c++,caption={}]
@@ -206,20 +220,6 @@ private:
     \bicaption{STopology。}{ STopology.}
     \label{fig:4_stopology}
 \end{figure}
-
-STopology类的定义如图4.7所示，它负责管理所有任务，初始化和更新任务之间的依赖关系等工作。STopology并不为用户提供接口，抽象出topology是为了方便设计scheduler的逻辑。
-
-STopology主要API解释：
-
-\begin{itemize}
-	\item 构造函数：传入task列表。
-	\item addEdge()：添加任务依赖。
-	\item size()：获取任务个数。
-	\item getTask()：获取task id对应的任务。
-	\item finishAddEdges()：完成依赖关系的指定。
-	\item updateTaskDependencies()：更新任务依赖。
-	\item getNextReadyTaskId()：获取就绪任务。
-\end{itemize}
 
 \subsection{SScheduler类}
 
@@ -383,7 +383,7 @@ int main(int argc, char* argv[]) {
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.40\textwidth]{4_star-d_example_result}
+    \includegraphics[width=0.60\textwidth]{4_star-d_example_result}
     \bicaption{star-d测试用例运行结果。}{ Result of star-d test case.}
     \label{fig:4_star-d_example_result}
 \end{figure}

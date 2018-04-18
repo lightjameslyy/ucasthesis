@@ -10,7 +10,7 @@ star\_tp的架构如图3.1所示。
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.60\textwidth]{3_star_tp-architecture}
+    \includegraphics[width=0.50\textwidth]{3_star_tp-architecture}
     \bicaption{star\_tp的架构。}{Architecture of star\_tp.}
     \label{fig:3_star_tp-architecture}
 \end{figure}
@@ -250,16 +250,16 @@ int main() {
 
 测试程序运行在有64个核的服务器上，由于线程池容量指定为6，所以不会出现线程资源抢占的情况。
 
-运行结果如图3.7所示。在开始和退出阶段稍有停顿，这是因为star\_tp运行时环境的初始化和退出阶段涉及许多资源的申请和释放。
-
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.40\textwidth]{3_star_tp_example_result}
+    \includegraphics[width=0.50\textwidth]{3_star_tp_example_result}
     \bicaption{star\_tp测试用例运行结果。}{ Result of star\_tp test case.}
     \label{fig:3_star_tp_example_result}
 \end{figure}
 
-程序多次执行的结果是不同的，因为可以并行执行的任务的执行顺序是不固定的。但是线程池容量确定的情况下，这个测试用例的运行过程可以分为七个阶段，如表3.1所示。在线程池容量为6时，运行结果如视频和右图所示。
+运行结果如图3.7所示。在开始和退出阶段稍有停顿，这是因为star\_tp运行时环境的初始化和退出阶段涉及许多资源的申请和释放。
+
+程序多次执行的结果是不同的，因为可以并行执行的任务的执行顺序是不固定的。但是线程池容量确定的情况下，这个测试用例的运行过程可以分为七个阶段，如表3.1所示。
 
 \begin{table}[!htbp]
     \bicaption{star\_tp测试用例的七个运行阶段。}{Seven running phases of star\_tp test case.}
@@ -284,6 +284,9 @@ int main() {
     \end{tabular}
 \end{table}
 
-程序执行的七个阶段的运行时情景是这样的：程序开始运行后，0，1，2，5，6，8，9，10这些任务都是就绪的，但是由于线程池容量有限，前六个先执行，由于9，10两个任务在其他任务之后插入任务队列，所以调度的时候也排在后边；然后（约一秒后），已经就绪的9和10立即执行，由于1和2执行完成，变为ready的3也执行了……依次类推，任务的调度和执行按照指定的依赖关系异步并行执行。
+程序执行的七个阶段的运行时情景是这样的：程序开始运行后，0，1，2，5，6，8，9，10这些任务都是就绪的，但是由于线程池容量有限（指定为6），前六个先执行，由于任务9，10两个任务在其他任务之后插入任务队列，所以调度的时候也排在后边；然后（约一秒后），已经就绪的任务9和10立即执行，由于任务1和2执行完成，变为ready的任务3也执行了；剩下的任务12到15也根据依赖关系依次执行完成。
+
+从运行结果可以看出，在线程池容量有限的情况下，star\_tp的调度策略实现了最大的并行度，充分利用分配到的计算资源，尽量提高程序的优化效果。
+
 
 
