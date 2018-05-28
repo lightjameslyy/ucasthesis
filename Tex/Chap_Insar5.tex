@@ -12,7 +12,7 @@ InSAR算法在许多地学研究应用中都有很好的作用，利用InSAR进�
 
 \section{InSAR算法基本原理}
 
-InSAR测量模式主要包括两种:一种是双天线单轨(Single Pass)模式,该模式主要用于生成数字高程模型，一般被机载SAR所采用。另一种则是双轨(Two Pass) 模式，该模式主要用来获取地表的形变,一般被星载SAR所采用.我们用重复轨道干涉测量作为例子，简要介绍InSAR技术的基本原理，如图5.1所示。
+InSAR测量模式主要分为两种:一种是双天线单轨(Single Pass)模式，该模式主要用于生成数字高程模型，一般被机载SAR所采用。另一种则是双轨(Two Pass) 模式，该模式主要用来获取地表的形变,一般被星载SAR所采用.我们用重复轨道干涉测量作为例子，简要介绍InSAR技术的基本原理，如图5.1所示。
 
 \begin{figure}[!htbp]
     \centering
@@ -119,7 +119,7 @@ OpenMP的fork/join模式属于整体同步模型，存在大量的同步消耗�
         \hline
         操作系统 & CentOS Linux release 7.3.1611 (Core) \\ \hline
         处理器 & Intel(R) Xeon(R) CPU E7- 8830  @ 2.13GHz \\ \hline
-        核数 & 64 \\ \hline
+        核数 & 物理核数：8，逻辑核数：64 \\ \hline
         内存 & 1TB \\ \hline
         编译器 & gcc 4.8.5 \\ \hline
     \end{tabular}
@@ -183,7 +183,7 @@ OpenMP的fork/join模式属于整体同步模型，存在大量的同步消耗�
     \end{tabular}
 \end{table}
 
-单个算法的优化效果由2倍到20多倍不等，这种差异是由算法本身的特点决定的，计算密集型的算法（如Baseline）优化效果可以达到20多倍，I/O密集型的算法（如IQCombine）优化效果只有不到2倍。
+单个算法的加速比由2倍到20多倍不等，这种差异是由算法本身的特点决定的，计算密集型的算法（如Baseline）的加速比可以达到20多倍，I/O密集型的算法（如IQCombine）的加速比只有不到2倍。
 
 \begin{figure}[!htbp]
     \centering
@@ -192,7 +192,7 @@ OpenMP的fork/join模式属于整体同步模型，存在大量的同步消耗�
     \label{fig:5_insar_openmp_result}
 \end{figure}
 
-图5.5是OpenMP版本整个流程的优化效果，在开启32线程时达到6倍左右，之后随着线程数增加，操作系统管理线程的开销过大，导致性能开始下降。
+图5.5是OpenMP版本整个流程的加速比，在开启32线程时达到6倍左右，之后随着线程数增加，操作系统管理线程的开销过大，导致性能开始下降。
 
 \subsection{star\_tp优化结果}
 
@@ -201,11 +201,11 @@ OpenMP的fork/join模式属于整体同步模型，存在大量的同步消耗�
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=1.0\textwidth]{5_insar_star_tp_openmp}
-    \bicaption{star\_tp vs. OpenMP。}{star\_tp vs. OpenMP.}
+    \bicaption{star\_tp与OpenMP的对比。}{star\_tp vs. OpenMP.}
     \label{fig:5_insar_star_tp_openmp}
 \end{figure}
 
-测试中star\_tp的线程池的容量设置为10（根据最大并行度来设置，从图5.3可以粗略估计出最大并行度）。通过图5.6可以看出，线程数相同时，star\_tp的优化效果要优于OpenMP，而且当线程数由32增加为64时，OpenMP版本的性能开始下降，而star\_tp的性能还在提升，这体现出了star\_tp更高的CPU利用率；从最好的优化效果看，star\_tp的优化效果最高达到将近11倍，超过了OpenMP版本的6倍。
+测试中star\_tp的线程池的容量设置为10（根据最大并行度来设置，从图5.3可以粗略估计出最大并行度）。通过图5.6可以看出，线程数相同时，star\_tp的优化效果要优于OpenMP，而且当线程数由32增加为64时，OpenMP版本的性能开始下降，而star\_tp的性能还在提升，这体现出了star\_tp更高的CPU利用率；从最好的优化效果看，star\_tp对InSAR的加速比最高达到将近11倍，超过了OpenMP版本的6倍。
 
 \subsection{star-d优化结果}
 
@@ -263,8 +263,8 @@ star-d和OpenMP的优化效果的对比如图5.7所示。
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=1.0\textwidth]{5_insar_star-d_openmp}
-    \bicaption{star-d vs. OpenMP。}{star-d vs. OpenMP.}
+    \bicaption{star-d与OpenMP的对比。}{star-d vs. OpenMP.}
     \label{fig:5_insar_star-d_openmp}
 \end{figure}
 
-测试中，star-d的worker个数设置为4，每个worker执行任务时开启与OpenMP版本相同的线程数。从计算时间上看，与OpenMP单线程测试结果相比，开启16个线程时，OpenMP达到12倍的优化效果，star-d达到38倍的优化效果。即使用4个worker的时候，star-d达到了OpenMP版本的3倍以上的性能，这是star-d的可扩展性的表现。
+测试中，star-d的worker个数设置为4，每个worker执行任务时开启与OpenMP版本相同的线程数。从计算时间上看，与OpenMP单线程测试结果相比，开启16个线程时，OpenMP达到12倍的加速比，star-d达到38倍的加速比。即使用4个worker的时候，star-d达到了OpenMP版本的3倍以上的性能，这是star-d的可扩展性的表现。

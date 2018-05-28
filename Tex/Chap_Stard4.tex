@@ -1,5 +1,5 @@
 
-\chapter{star-d}
+\chapter{分布式环境下的并行优化工具——star-d}
 \label{chap:stard4}
 
 分布式内存下的并行优化的主要优势就是可扩展性较好，但是分布式环境下的编程和调试比共享内存下要复杂的多，因为要考虑复杂的通信和分布式调度算法。但是随着PGAS编程模型的发展，像访问共享内存一样访问分布式内存成为了可能，而且已经有了不少实现了PGAS编程模型的语言和库。star-d的开发就是基于PGAS来实现的，同时任务调度依然采用数据流计算模型。本章下面的内容主要介绍star-d的架构设计、代码实现、API和正确性测试。
@@ -160,7 +160,7 @@ private:
     int _mId;
 };
 \end{lstlisting}
-    \bicaption{STask。}{ STask.}
+    \bicaption{STask类。}{ Class STask.}
     \label{fig:4_stask}
 \end{figure}
 
@@ -217,7 +217,7 @@ private:
     std::queue<int> _mReadyTaskIdQueue, _mRunningTaskIdQueue, _mDoneTaskIdQueue;
 };
 \end{lstlisting}
-    \bicaption{STopology。}{ STopology.}
+    \bicaption{STopology类。}{ Class STopology.}
     \label{fig:4_stopology}
 \end{figure}
 
@@ -239,7 +239,7 @@ private:
     void assignTaskToWorker(int, int);
 };
 \end{lstlisting}
-    \bicaption{SScheduler。}{ SScheduler.}
+    \bicaption{SScheduler类。}{ Class SScheduler.}
     \label{fig:4_sscheduler}
 \end{figure}
 
@@ -275,7 +275,7 @@ private:
     std::queue<int> _mTaskHistory;
 };
 \end{lstlisting}
-    \bicaption{SWorker。}{ SWorker.}
+    \bicaption{SWorker类。}{ Class SWorker.}
     \label{fig:4_sworker}
 \end{figure}
 
@@ -304,7 +304,7 @@ int size();
 int myid();
 } // namespace star
 \end{lstlisting}
-    \bicaption{SStar。}{ SStar.}
+    \bicaption{SStar模块。}{ SStar module.}
     \label{fig:4_sstar}
 \end{figure}
 

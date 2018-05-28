@@ -1,5 +1,5 @@
 
-\chapter{star\_tp}
+\chapter{共享内存下的并行优化工具——star\_tp}
 \label{chap:startp3}
 
 在多核的共享内存环境下，并行优化要达到较高的优化结果，就要减少同步造成的CPU时间浪费，充分挖掘计算资源的利用率。star\_tp是共享内存下基于数据流计算模型的并行优化系统，采用线程池技术实现，它的运行时系统提供高效的任务调度策略，没有依赖的任务可以在计算资源充足的情况下异步执行，充分利用计算资源。下面从架构的设计、API风格和功能性测试等方面介绍star\_tp。
@@ -103,7 +103,7 @@ public:
     void taskInfo();
 };
 \end{lstlisting}
-    \bicaption{CTask。}{ CTask.}
+    \bicaption{CTask类。}{Class CTask.}
     \label{fig:3_ctask}
 \end{figure}
 
@@ -136,7 +136,7 @@ public:
     void submit(boost::function<void()>);
 };
 \end{lstlisting}
-    \bicaption{CThreadpool。}{ CThreadpool.}
+    \bicaption{CThreadpool类。}{Class CThreadpool.}
     \label{fig:3_cthreadpool}
 \end{figure}
 
@@ -173,7 +173,7 @@ class CScheduler {
     void schedule(CThreadPool&);
 };
 \end{lstlisting}
-    \bicaption{CScheduler。}{ CScheduler.}
+    \bicaption{CScheduler类。}{ Class CScheduler.}
     \label{fig:3_cscheduler}
 \end{figure}
 
